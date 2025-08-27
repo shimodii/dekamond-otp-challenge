@@ -1,6 +1,7 @@
 package service
 
 import (
+  "time"
 	"context"
 	"crypto/rand"
 	//"fmt"
@@ -32,4 +33,26 @@ func ValidateCode(code string, phone string) bool {
     return true
   }
   return false
+}
+
+// GPT HELPED ME IN THIS PART :D
+func CanRequestOTP(phone string) (bool, error) {
+	key := "otp:count:" + phone
+
+	// increment request count
+	count, err := repository.RedisDB.Incr(context.Background(), key).Result()
+	if err != nil {
+		return false, err
+	}
+
+	if count == 1 {
+		// first time → set 10 min expiry
+		repository.RedisDB.Expire(context.Background(), key, 10*time.Minute)
+	}
+
+	if count > 3 {
+		return false, nil // limit exceeded
+	}
+
+	return true, nil
 }
