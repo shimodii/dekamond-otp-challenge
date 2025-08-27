@@ -13,3 +13,8 @@ type User struct {
 type MinUser struct {
   Phone string `json:"phone"`
 }
+
+type SignUser struct {
+  Phone string `json:"phone"`
+  Code string `json:"code"`
+}
