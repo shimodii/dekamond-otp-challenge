@@ -12,3 +12,13 @@ func GetAllUsers(c *fiber.Ctx) error {
 
   return c.JSON(users)
 }
+
+func GetSingleUser(c *fiber.Ctx) error {
+  id := c.Params("id")
+
+  var user model.User
+
+  repository.Database.Find(&user, id)
+
+  return c.JSON(user)
+}
