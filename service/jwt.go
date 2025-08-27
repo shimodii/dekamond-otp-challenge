@@ -2,6 +2,8 @@ package service
 
 import (
   "time"
+  "fmt"
+
   "github.com/golang-jwt/jwt/v5"
 )
 
@@ -16,4 +18,14 @@ func GenerateJWT(userID uint) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	return token.SignedString(jwtKey)
+}
+
+// a little help from gpt for validation function :D
+func ValidateJWT(tokenStr string) (*jwt.Token, error) {
+	return jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method")
+		}
+		return jwtKey, nil
+	})
 }
