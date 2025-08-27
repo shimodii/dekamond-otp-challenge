@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/shimodii/dekamond-otp-challenge/controller"
 	"github.com/shimodii/dekamond-otp-challenge/model"
 	"github.com/shimodii/dekamond-otp-challenge/repository"
 )
@@ -35,6 +36,8 @@ func main() {
     repository.RedisDB.Set(ctx, user.Phone, "12345", 10*time.Second)
     return c.SendString("ok")
   })
+
+  application.Get("/users", controller.GetAllUsers)
 
   application.Listen(":1628")
 }
