@@ -9,3 +9,7 @@ type User struct {
   Phone string `json:"phone" gorm:"uniqueIndex"`
   CreatedAt time.Time `json:"createdat"`
 }
+
+type MinUser struct {
+  Phone string `json:"phone"`
+}
