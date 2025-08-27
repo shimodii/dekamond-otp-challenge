@@ -44,6 +44,16 @@ func Phonenumber(c *fiber.Ctx) error {
   if err != nil {
     panic(err)
   }
+  
+  // a little help from GPT
+  ok, err := service.CanRequestOTP(user.Phone)
+	if err != nil {
+		return c.Status(500).SendString("Redis error")
+	}
+	if !ok {
+		return c.Status(429).SendString("Too many requests, try again later")
+	}
+  // till here
 
   code := service.GenCode(3)
   fmt.Println("new code genrated:", user.Phone, code)
