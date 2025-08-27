@@ -51,3 +51,28 @@ func Phonenumber(c *fiber.Ctx) error {
 
   return c.SendString("ok")
 }
+
+func OtpPhonenum(c *fiber.Ctx) error {
+  var user model.SignUser
+  err := c.BodyParser(&user)
+  if err != nil {
+    panic(err)
+  }
+
+  if service.ValidateCode(user.Code, user.Phone) {
+    //fmt.Println("hellllloooo")
+    var newUser model.User
+    res := repository.Database.Where("phone = ?", user.Phone).First(&newUser)
+    if res.Error != nil {
+      var signUpUser model.User
+      
+      signUpUser.Phone = user.Phone
+      signUpUser.CreatedAt = time.Now()
+      repository.Database.Create(&signUpUser)
+      return c.JSON(signUpUser)
+    }
+    return c.SendString("jwt token yay")
+  }
+  
+  return c.SendString("no no no")
+}
