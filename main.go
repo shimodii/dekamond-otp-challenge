@@ -41,6 +41,7 @@ func main() {
   application.Get("/users", controller.GetAllUsers)
   application.Get("/users/:id", controller.GetSingleUser)
   application.Post("/get-code", controller.Phonenumber)
+  application.Post("/sign", controller.OtpPhonenum)
 
   fmt.Println("App is running on 1628")
   application.Listen(":1628")
