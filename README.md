@@ -70,3 +70,44 @@ so postgres is better.
 we had to store the otp codes, they was not percistant data so they should handled in memory.
 we could save them in a vector or some datastructures like that. but that was messy.
 so we used redis. an in-memmory database with some functionalities like expire time :)))
+
+
+# sample requests
+- for healthcheck:
+```
+curl "localhost:1628"
+```
+return a simple hello world
+
+- for getting all signed users:
+```
+curl "localhost:1628/users?page=1"
+```
+return 10 signed users based on page number you entered
+
+- for specific user infos:
+```
+curl "localhost:1628/users/2"
+```
+this example return user infos with id of 2
+
+- for getting code:
+```
+curl --location 'localhost:1628/get-code' \
+--header 'Content-Type: application/json' \
+--data '{
+    "phone": "9933345821"
+}'
+```
+after sending this request the code must printed on console.
+
+
+- for entering code and signup or getting jwt:
+```
+curl --location 'localhost:1628/sign' \
+--header 'Content-Type: application/json' \
+--data '{
+    "phone": "9933345821",
+    "code": "123"
+}'
+```
