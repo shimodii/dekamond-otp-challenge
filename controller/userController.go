@@ -81,7 +81,15 @@ func OtpPhonenum(c *fiber.Ctx) error {
       repository.Database.Create(&signUpUser)
       return c.JSON(signUpUser)
     }
-    return c.SendString("jwt token yay")
+
+    newToken, newError := service.GenerateJWT(newUser.ID)
+    if newError != nil {
+      panic(newError)
+    }
+
+    return c.JSON(fiber.Map{
+      "token": newToken,
+    })
   }
   
   return c.SendString("no no no")
