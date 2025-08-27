@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,5 +41,6 @@ func main() {
   application.Get("/users", controller.GetAllUsers)
   application.Get("/users/:id", controller.GetSingleUser)
 
+  fmt.Println("App is running on 1628")
   application.Listen(":1628")
 }
