@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/shimodii/dekamond-otp-challenge/model"
 	"github.com/shimodii/dekamond-otp-challenge/repository"
@@ -8,7 +10,17 @@ import (
 
 func GetAllUsers(c *fiber.Ctx) error {
   users := []model.User{}
-  repository.Database.Find(&users)
+
+  limit := 10
+  page := c.QueryInt("page", 1)
+  
+  page = max(1, page)
+
+  offset := (page-1) * limit
+
+  repository.Database.Limit(limit).Offset(offset).Find(&users)
+  //fmt.Println(users)
+  //repository.Database.Find(&users)
 
   return c.JSON(users)
 }
