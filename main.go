@@ -38,6 +38,7 @@ func main() {
   })
 
   application.Get("/users", controller.GetAllUsers)
+  application.Get("/users/:id", controller.GetSingleUser)
 
   application.Listen(":1628")
 }
