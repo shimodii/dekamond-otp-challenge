@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+	"crypto/rand"
+	//"fmt"
+
 	"math/big"
-  "crypto/rand"
 
 	"github.com/shimodii/dekamond-otp-challenge/repository"
 )
@@ -22,8 +24,10 @@ func GenCode(length uint) string {
 }
 
 func ValidateCode(code string, phone string) bool {
-  ourCode := repository.RedisDB.Get(context.Background(), phone).String()
-  
+  ourCode, _ := repository.RedisDB.Get(context.Background(), phone).Result()
+  //fmt.Println("our code:", ourCode)
+  //fmt.Println("your code:", code)
+
   if ourCode == code {
     return true
   }
